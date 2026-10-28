@@ -1,0 +1,32 @@
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Streamlit configuration
+.streamlit/*
+!.streamlit/config.toml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor and test cache
+.vscode/
+.pytest_cache/
+.mypy_cache/
+
+# Personal study materials
+lecture_library/*
+!lecture_library/.gitkeep
