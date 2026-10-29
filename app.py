@@ -1,6 +1,8 @@
 
 import streamlit as st
 from pathlib import Path
+from auth import show_auth_page
+from supabase_client import supabase
 
 st.set_page_config(
     page_title="Upwise",
@@ -124,5 +126,9 @@ navigation = st.navigation(
         ]
     }
 )
+
+if "user" not in st.session_state:
+    show_auth_page()
+    st.stop()
 
 navigation.run()
