@@ -129,6 +129,23 @@ navigation = st.navigation(
 
 if "user" not in st.session_state:
     show_auth_page()
-    st.stop()
+else:
+    # Sign Out button in the sidebar
+    st.sidebar.divider()
+    st.sidebar.write("Signed in to Upwise")
 
-navigation.run()
+    if st.sidebar.button("Sign Out", use_container_width=True):
+        try:
+            supabase.auth.sign_out()
+        except Exception:
+            pass
+
+        st.session_state.pop("user", None)
+        st.session_state.pop("session", None)
+        st.rerun()
+
+    navigation.run()
+
+
+
+

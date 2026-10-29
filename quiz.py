@@ -365,8 +365,20 @@ def display_quiz(pdf_text, subject):
 
     if not st.session_state.quiz_submitted:
         if st.button("✅ Submit Quiz", key="submit_quiz"):
-            st.session_state.quiz_submitted = True
-            st.rerun()
+            unanswered = [
+                index + 1
+                for index in range(len(questions))
+                if st.session_state.quiz_answers.get(index) is None
+            ]
+
+            if unanswered:
+                st.warning(
+                    f"Please answer all questions before submitting. "
+                    f"Unanswered questions: {', '.join(map(str, unanswered))}"
+                )
+            else:
+                st.session_state.quiz_submitted = True
+                st.rerun()
 
     if not st.session_state.quiz_submitted:
         return
