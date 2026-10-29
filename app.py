@@ -113,9 +113,15 @@ mind_map = st.Page(
     icon="🧠"
 )
 
+quiz_history = st.Page(
+    "pages/8_Quiz_History.py",
+    title="Quiz History",
+    icon="📊"
+)
+
 navigation = st.navigation(
     {
-        "Main Menu": [home, library],
+        "Main Menu": [home, library, quiz_history],
         "AI Study Tools": [
             summary,
             quiz,

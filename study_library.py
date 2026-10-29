@@ -8,7 +8,7 @@ from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 
 
-LIBRARY_DIR = Path("lecture_library")
+LIBRARY_DIR = Path("study_library")
 INDEX_FILE = LIBRARY_DIR / "library_index.json"
 
 FOLDER_COLORS = {
@@ -80,7 +80,7 @@ def save_library(data):
     )
 
 
-def display_lecture_library():
+def display_study_library():
     st.title("📚 My Study Library")
     st.write("Organize your study materials by subject.")
 
@@ -403,4 +403,4 @@ def display_lecture_library():
              st.session_state["selected_subject_id"] = subject["id"]
              st.rerun()
 
-display_lecture_library()
+display_study_library()

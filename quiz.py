@@ -5,7 +5,7 @@ import requests
 import streamlit as st
 
 from ai_helpers import generate_ai_response
-
+from supabase_client import supabase
 
 def normalize_topic(topic):
     """Normalize topic names so similar labels can be grouped."""
@@ -246,15 +246,14 @@ Study material:
                 f"Retrying to generate the missing questions "
                 f"({attempt + 1}/{max_attempts})..."
             )
-
-    if not valid_questions:
+    if len(valid_questions) < number_of_questions:
         raise ValueError(
-            "The AI could not generate valid questions. "
-            "Please try again."
+            f"Only {len(valid_questions)} valid questions could be "
+            f"generated out of {number_of_questions}. "
+            "Please click Generate Quiz to try again."
         )
 
     return valid_questions[:number_of_questions]
-
 
 def clear_quiz_state(clear_weak_topics=True):
     """Clear quiz answers and old radio selections."""
@@ -269,6 +268,7 @@ def clear_quiz_state(clear_weak_topics=True):
     st.session_state.quiz_data = None
     st.session_state.quiz_answers = {}
     st.session_state.quiz_submitted = False
+    st.session_state.quiz_history_saved = False
 
     if clear_weak_topics:
         st.session_state.weak_topic_names = []
@@ -283,6 +283,7 @@ def display_quiz(pdf_text, subject):
         "quiz_submitted": False,
         "weak_topic_names": [],
         "quiz_mode": "regular",
+        "quiz_history_saved": False,
     }
 
     for key, value in defaults.items():
@@ -405,6 +406,29 @@ def display_quiz(pdf_text, subject):
 
     total = len(questions)
     score = correct_count / total * 100
+
+    # Save quiz result to Supabase only once per completed attempt.
+    if "quiz_history_saved" not in st.session_state:
+        st.session_state.quiz_history_saved = False
+
+    if not st.session_state.quiz_history_saved:
+        try:
+            user = st.session_state.get("user")
+            
+            if user:
+                supabase.table("quiz_history").insert({
+                    "user_id": user.id,
+                    "subject": subject.strip() if subject and subject.strip() else "General",
+                    "quiz_mode": st.session_state.get("quiz_mode", "regular"),
+                    "total_questions": total,
+                    "correct_answers": correct_count,
+                    "score": round(score, 2),
+                }).execute()
+
+                st.session_state.quiz_history_saved = True
+
+        except Exception as error:
+            st.warning(f"Could not save quiz history: {error}")
 
     st.subheader("🏆 Your Quiz Results")
     st.metric("Score", f"{correct_count}/{total}")
