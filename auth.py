@@ -119,23 +119,21 @@ def show_auth_page():
                     "Password must contain at least 8 characters."
                 )
 
+            elif not email.strip():
+                st.error("Please enter your email address.")
+
             else:
                 try:
                     result = supabase.auth.sign_up({
-                        "email": email,
+                        "email": email.strip(),
                         "password": password
                     })
 
-                    if result.session is not None:
-                        st.session_state["user"] = result.user
-                        st.session_state["session"] = result.session
-                        st.rerun()
-
-                    else:
-                        st.success(
-                            "Account created! Please check your email "
-                            "to confirm your account before signing in."
-                        )
+                    # Do not automatically log in after registration
+                    st.success(
+                        "Account created successfully! "
+                        "Please go to the Sign In tab to log in."
+                    )
 
                 except Exception as e:
                     st.error(f"Sign up failed: {e}")
