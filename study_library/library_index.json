@@ -1,10 +1,4 @@
 {
-    "subjects": [
-        {
-            "id": "eea2e63b-1cab-4f80-9920-e1374e1186d3",
-            "name": "Programming",
-            "color": "#F59E0B"
-        }
-    ],
+    "subjects": [],
     "notes": []
 }
