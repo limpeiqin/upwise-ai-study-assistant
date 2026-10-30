@@ -70,3 +70,9 @@ If using local AI features, ensure Ollama is running and the model configured in
 - Improve the user interface and user experience.
 - Expand application testing.
 - Enhance learning progress tracking.
+
+## 🎥 Project Demo
+
+Watch the Upwise demonstration video:
+
+[▶ Watch Upwise Demo on YouTube](https://youtu.be/E-J6_VpwFro?si=usBTCPoP0abT8TCQ)
